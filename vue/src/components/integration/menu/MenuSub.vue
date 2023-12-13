@@ -1,27 +1,29 @@
-<!--  -->
 <template>
-  <el-sub-menu>
-    <template v-for="(item, index) in props.menuChildren" :key="index">
-      <MenuSub v-if="item.children.length"></MenuSub>
-      <el-menu-item v-else></el-menu-item>
+  <el-sub-menu v-if="props.menuChildren.children">
+    <template #title>
+      <el-icon><location /></el-icon>
+      <span>{{ props.menuChildren.title }}</span>
+    </template>
+    <template v-for="(item, index) in props.menuChildren.children" :key="index">
+      <MenuSub v-if="item.children" :menuChildren="item"> </MenuSub>
+      <el-menu-item v-else>{{ item.title }}</el-menu-item>
     </template>
   </el-sub-menu>
+  <el-menu-item v-else>{{ props.menuChildren.title }}</el-menu-item>
 </template>
 
 <script setup lang="ts">
-// import { PropsType } from './type';
-// import MenuItem from './MenuItem.vue'
-
+import type { PropType } from 'vue'
 const props = defineProps({
   menuChildren: {
-    type: Array<typeProps>,
-    default: []
+    type: Object as PropType<typeProps>,
+    required: true
   }
 })
 
 interface typeProps {
   title: String
-  children: Array<typeProps>
+  children?: Array<typeProps>
   path: String
 }
 </script>
