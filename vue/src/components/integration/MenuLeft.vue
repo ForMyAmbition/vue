@@ -2,17 +2,16 @@
   <el-row class="tac">
     <el-col>
       <el-menu
-        active-text-color="#ffd04b"
-        background-color="#545c64"
-        class="el-menu-vertical-demo"
         default-active="2"
-        text-color="#fff"
+        class="el-menu-vertical-demo"
         @open="handleOpen"
         @close="handleClose"
       >
         <template v-for="(item, index) in menu" :key="index">
           <menu-sub v-if="item.children" :menuChildren="item"></menu-sub>
-          <el-menu-item v-else>{{ item.title }}</el-menu-item>
+          <el-menu-item v-else>
+            <el-icon><location /></el-icon>{{ item.title }}</el-menu-item
+          >
         </template>
       </el-menu>
     </el-col>
@@ -33,8 +32,16 @@ let menu = reactive([
     path: '234s234',
     children: [
       {
+        title: '二级',
+        path: '234234'
+      },
+      {
+        title: '二级',
+        path: '2342e34'
+      },
+      {
         title: '一级的二级',
-        path: '234234',
+        path: '23423t4',
         children: [
           {
             title: '一级的san级',
