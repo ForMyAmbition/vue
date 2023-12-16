@@ -1,17 +1,13 @@
 <template>
   <el-row class="tac">
     <el-col>
-      <el-menu
-        default-active="2"
-        class="el-menu-vertical-demo"
-        @open="handleOpen"
-        @close="handleClose"
-      >
+      <el-menu default-active="2" class="el-menu-vertical-demo" @open="handleOpen" @close="handleClose">
         <template v-for="(item, index) in menu" :key="index">
           <menu-sub v-if="item.children" :menuChildren="item"></menu-sub>
           <el-menu-item v-else>
-            <el-icon><location /></el-icon>{{ item.title }}</el-menu-item
-          >
+            <el-icon><component :is="item.icon" /></el-icon>
+            {{ item.title }}
+          </el-menu-item>
         </template>
       </el-menu>
     </el-col>
@@ -26,10 +22,17 @@ import MenuSub from './menu/MenuSub.vue'
 import { useRouter } from 'vue-router'
 import { reactive } from 'vue'
 
-let menu = reactive([
+export interface typePropsMenu {
+  title: String
+  children?: Array<typePropsMenu>
+  path: String
+  icon?: String
+}
+let menu = reactive<typePropsMenu[]>([
   {
     title: '一级',
     path: '234s234',
+    icon: 'DocumentCopy',
     children: [
       {
         title: '二级',
@@ -37,10 +40,12 @@ let menu = reactive([
       },
       {
         title: '二级',
-        path: '2342e34'
+        path: '2342e34',
+        icon: 'DocumentCopy'
       },
       {
         title: '一级的二级',
+        icon: 'Expand',
         path: '23423t4',
         children: [
           {
@@ -53,7 +58,8 @@ let menu = reactive([
   },
   {
     title: '二级',
-    path: '234234'
+    path: '234234',
+    icon: 'Expand'
   }
 ])
 
