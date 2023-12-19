@@ -6,7 +6,7 @@
     </template>
     <template v-for="(item, index) in props.menuChildren.children" :key="index">
       <MenuSub v-if="item.children" :menuChildren="item"></MenuSub>
-      <el-menu-item v-else :index="item.path">
+      <el-menu-item v-else :index="item.path" :route="item.path">
         <el-icon><component :is="item.icon" /></el-icon>
         {{ item.title }}
       </el-menu-item>

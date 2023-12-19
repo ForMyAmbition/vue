@@ -1,7 +1,7 @@
 <template>
   <el-row class="tac">
     <el-col>
-      <el-menu default-active="2" class="el-menu-vertical-demo" @open="handleOpen" @close="handleClose">
+      <el-menu default-active="2" class="el-menu-vertical-demo" @open="handleOpen" @close="handleClose" router>
         <template v-for="(item, index) in menu" :key="index">
           <menu-sub v-if="item.children" :menuChildren="item"></menu-sub>
           <el-menu-item v-else>
@@ -19,13 +19,13 @@
 // import { RouterLink, RouterView } from 'vue-router'
 import { onMounted } from 'vue'
 import MenuSub from './menu/MenuSub.vue'
-import { useRouter } from 'vue-router'
+import { useRouter, type RouteLocationRaw } from 'vue-router'
 import { reactive } from 'vue'
 
 export interface typePropsMenu {
   title: String
   children?: Array<typePropsMenu>
-  path: String
+  path: RouteLocationRaw
   icon?: String
 }
 let menu = reactive<typePropsMenu[]>([
@@ -40,7 +40,7 @@ let menu = reactive<typePropsMenu[]>([
       },
       {
         title: '二级',
-        path: '2342e34',
+        path: '234s2e34',
         icon: 'DocumentCopy'
       },
       {
@@ -50,7 +50,7 @@ let menu = reactive<typePropsMenu[]>([
         children: [
           {
             title: '一级的san级',
-            path: '23423sd4'
+            path: '/workbench'
           }
         ]
       }
