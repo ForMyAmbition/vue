@@ -6,9 +6,14 @@
 <script setup lang="ts">
 import TableTs from '@/TableTs/TableTs'
 import { ref, h, render, onMounted } from 'vue'
-const { createDom } = TableTs()
 const tableContentRef = ref()
-createDom()
-console.log('🚀 ~ file: WorkbenchTable.vue:10 ~ createDom:', createDom)
+
+onMounted(() => {
+  TableTs(tableContentRef.value)
+})
 </script>
-<style lang="less" scoped></style>
+<style lang="less" scoped>
+#tableContentRef {
+  height: 500px;
+}
+</style>
