@@ -4,7 +4,7 @@
 </template>
 
 <script setup lang="ts">
-import TableTs from '@/TableTs/TableTs'
+import TableTs from '@/tableTs/tableTs'
 import { ref, h, render, onMounted } from 'vue'
 const tableContentRef = ref()
 
@@ -17,3 +17,4 @@ onMounted(() => {
   height: 500px;
 }
 </style>
+@/tableTs/TableTs@/tableTs/tableTs
