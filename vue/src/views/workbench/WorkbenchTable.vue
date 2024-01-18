@@ -17,4 +17,3 @@ onMounted(() => {
   height: 500px;
 }
 </style>
-@/tableTs/TableTs@/tableTs/tableTs
