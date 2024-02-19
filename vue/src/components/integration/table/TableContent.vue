@@ -1,23 +1,26 @@
 <template>
+  {{ props }}{{ tableData }}
   <div :key="key">
     <el-table ref="multipleTableRef" :data="tableData" style="width: 100%">
-      <el-table-column type="selection" width="55" />
-      <el-table-column label="Date" width="120">
-        <template #default="scope">{{ scope.row.date }}</template>
-      </el-table-column>
-      <el-table-column property="name" label="Name" width="120" />
-      <el-table-column property="address" label="Address" show-overflow-tooltip />
+      <template v-for="item in props.config?.listConfig.column" :key="item.dataIndex">
+        <el-table-column :property="item.dataIndex" :label="item.title" width="120" />
+      </template>
     </el-table>
-    <div style="margin-top: 20px">
-      <!-- <el-button @click="toggleSelection([tableData[1], tableData[2]])">Toggle selection status of second and third rows</el-button>
-    <el-button @click="toggleSelection()">Clear selection</el-button> -->
-    </div>
+    <div style="margin-top: 20px"></div>
   </div>
 </template>
 
 <script lang="ts" setup>
 import { ref, onMounted } from 'vue'
+import type { PropType } from 'vue'
 import { ElTable, ElTableColumn } from 'element-plus'
+import type { columnType, listType } from '@/types/columnType'
+import { inject } from 'vue'
+import type { requestType } from '@/types/requestType'
+import http from '@/utils/request'
+const props = defineProps({
+  config: Object as PropType<columnType>
+})
 interface User {
   date: string
   name: string
@@ -43,44 +46,16 @@ const handleSelectionChange = (val: User[]) => {
   multipleSelection.value = val
 }
 
-const tableData: User[] = [
-  {
-    date: '2016-05-03',
-    name: 'Tom',
-    address: 'No. 189, Grove St, Los Angeles'
-  },
-  {
-    date: '2016-05-02',
-    name: 'Tom',
-    address: 'No. 189, Grove St, Los Angeles'
-  },
-  {
-    date: '2016-05-04',
-    name: 'Tom',
-    address: 'No. 189, Grove St, Los Angeles'
-  },
-  {
-    date: '2016-05-01',
-    name: 'Tom',
-    address: 'No. 189, Grove St, Los Angeles'
-  },
-  {
-    date: '2016-05-08',
-    name: 'Tom',
-    address: 'No. 189, Grove St, Los Angeles'
-  },
-  {
-    date: '2016-05-06',
-    name: 'Tom',
-    address: 'No. 189, Grove St, Los Angeles'
-  },
-  {
-    date: '2016-05-07',
-    name: 'Tom',
-    address: 'No. 189, Grove St, Los Angeles'
-  }
-]
+const tableData = ref<{ [x: string]: any }[]>()
+const loadData = () => {
+  http.post('http://s1.com/index.php/base/index', { name: 'jack', age: 24 }, { confirm: '确定发送吗？' }).then((res) => {
+    const typedResponse = res as listType
+    console.log(typedResponse)
+    tableData.value = typedResponse.data.list
+  })
+}
 onMounted(() => {
+  loadData()
   key.value++
   console.log('页面挂载了')
 })

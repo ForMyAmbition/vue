@@ -5,8 +5,8 @@ import type { AxiosInstance, AxiosRequestConfig, AxiosResponse, InternalAxiosReq
 const http = axios.create({
   // timeout: 1000 * 4,
   headers: {
-    'content-type': 'application/json;charset=UTF-8',
-    'Access-Control-Allow-Headers': 'AuthToken, Authorization, Origin, Content-Type, Accept, X-Requested-With'
+    'content-type': 'application/json;charset=UTF-8'
+    // 'Access-Control-Allow-Headers': 'AuthToken, Authorization, Origin, Content-Type, Accept, X-Requested-With'
   },
   withCredentials: false
 })
@@ -58,7 +58,7 @@ const post = (url: string, params: any, confirm: { confirm: any } | null | undef
         type: 'warning'
       })
         .then(() => {
-          resolve(http.post(url, params))
+          resolve(OnSuccess(http.post(url, params)))
         })
         .catch(() => {
           ElMessage({
@@ -69,6 +69,14 @@ const post = (url: string, params: any, confirm: { confirm: any } | null | undef
     } else {
       resolve(http.post(url, params))
     }
+  })
+}
+// 过滤数据
+const OnSuccess = (promise: Promise<any>) => {
+  return new Promise((resolve, reject) => {
+    promise.then((res) => {
+      resolve(res.data)
+    })
   })
 }
 
