@@ -6,6 +6,9 @@
         <el-table-column :property="item.dataIndex" :label="item.title" width="120" />
       </template>
     </el-table>
+    <el-config-provider :locale="zhCn">
+      <el-pagination v-model:current-page="currentPage4" v-model:page-size="pageSize4" :page-sizes="[100, 200, 300, 400]" background layout="total, sizes, prev, pager, next, jumper" :total="400" @size-change="handleSizeChange" @current-change="handleCurrentChange" />
+    </el-config-provider>
     <div style="margin-top: 20px"></div>
   </div>
 </template>
@@ -13,38 +16,26 @@
 <script lang="ts" setup>
 import { ref, onMounted } from 'vue'
 import type { PropType } from 'vue'
-import { ElTable, ElTableColumn } from 'element-plus'
+import { ElTable, ElTableColumn, ElPagination } from 'element-plus'
 import type { columnType, listType } from '@/types/columnType'
-import { inject } from 'vue'
-import type { requestType } from '@/types/requestType'
 import http from '@/utils/request'
+import { ElConfigProvider } from 'element-plus'
+import zhCn from 'element-plus/es/locale/lang/zh-cn'
 const props = defineProps({
   config: Object as PropType<columnType>
 })
-interface User {
-  date: string
-  name: string
-  address: string
-}
 const key = ref(0)
 
+const currentPage4 = ref(4)
+const pageSize4 = ref(100)
+const handleSizeChange = (val: number) => {
+  console.log(`${val} items per page`)
+}
+const handleCurrentChange = (val: number) => {
+  // console.log(`current page: ${val}`)
+  loadData()
+}
 const multipleTableRef = ref<InstanceType<typeof ElTable>>()
-const multipleSelection = ref<User[]>([])
-const toggleSelection = (rows?: User[]) => {
-  if (rows) {
-    rows.forEach((row) => {
-      // TODO: improvement typing when refactor table
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-expect-error
-      multipleTableRef.value!.toggleRowSelection(row, undefined)
-    })
-  } else {
-    multipleTableRef.value!.clearSelection()
-  }
-}
-const handleSelectionChange = (val: User[]) => {
-  multipleSelection.value = val
-}
 
 const tableData = ref<{ [x: string]: any }[]>()
 const loadData = () => {
