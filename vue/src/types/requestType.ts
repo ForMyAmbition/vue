@@ -1,3 +1,3 @@
 export interface requestType {
-  post(url: string, params: any, content?: Object): Promise<any>
+  post(url: string, params: any, content?: Object | undefined): Promise<any>
 }

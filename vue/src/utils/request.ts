@@ -49,7 +49,7 @@ const responseFailed = (error: AxiosError) => {
 http.interceptors.response.use(responseSuccess, responseFailed)
 // import { MessageBox } from 'element-ui'
 import { ElMessage, ElMessageBox } from 'element-plus'
-const post = (url: string, params: any, confirm: { confirm: any } | null | undefined) => {
+const post = (url: string, params: any, confirm?: { confirm: any } | null | undefined) => {
   return new Promise((resolve, reject) => {
     if (confirm && confirm.confirm) {
       ElMessageBox.confirm(confirm.confirm || '确认操作吗', '提示', {
@@ -67,7 +67,7 @@ const post = (url: string, params: any, confirm: { confirm: any } | null | undef
           })
         })
     } else {
-      resolve(http.post(url, params))
+      resolve(OnSuccess(http.post(url, params)))
     }
   })
 }

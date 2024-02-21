@@ -1,6 +1,7 @@
 interface columnItemType {
   dataIndex: string
   title: string
+  search?: boolean
 }
 export interface columnType {
   listConfig: {

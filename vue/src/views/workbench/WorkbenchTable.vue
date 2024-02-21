@@ -14,7 +14,8 @@ const config = {
     column: [
       {
         dataIndex: 'name',
-        title: '姓名'
+        title: '姓名',
+        search: true
       }
     ]
   }
