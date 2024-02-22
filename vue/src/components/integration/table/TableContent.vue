@@ -1,5 +1,6 @@
 <template>
   {{ props }}{{ tableData }}{{ page }}
+  <TableSearch :column="props.config?.listConfig.column" @change="tableSearchCange" />
   <div :key="key">
     <el-table ref="multipleTableRef" :data="tableData" style="width: 100%">
       <template v-for="item in props.config?.listConfig.column" :key="item.dataIndex">
@@ -21,21 +22,29 @@ import type { columnType, listType } from '@/types/columnType'
 import http from '@/utils/request'
 import { ElConfigProvider } from 'element-plus'
 import zhCn from 'element-plus/es/locale/lang/zh-cn'
+import TableSearch from './TableSearch.vue'
 const props = defineProps({
   config: Object as PropType<columnType>
 })
+/* ----------------------------------- 分页 ----------------------------------- */
 const key = ref(0)
 const page = ref({
   currentPage: 1,
   pageSize: 100
 })
-
 const pageChange = (val: number) => {
   console.log(`current page: ${val}`)
   loadData()
 }
+
 const multipleTableRef = ref<InstanceType<typeof ElTable>>()
 
+/* ------------------------------- 筛选条件汇集统一请求 ------------------------------- */
+const tableSearchCange = (tableSearchCondition: Object) => {
+  console.log('🚀 ~ tableSearchCange ~ tableSearchCondition:', tableSearchCondition)
+}
+
+/* ---------------------------------- 请求数据 ---------------------------------- */
 const tableData = ref<{ [x: string]: any }[]>()
 const loadData = () => {
   let params = {

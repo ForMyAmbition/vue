@@ -6,16 +6,32 @@
 <script setup lang="ts">
 import TableTs from '@/tableTs/tableTs'
 import { ref, h, render, onMounted } from 'vue'
+import type { columnType } from '@/types/columnType'
 const tableContentRef = ref()
 
-const config = {
+const config: columnType = {
   listConfig: {
     url: '',
     column: [
       {
         dataIndex: 'name',
         title: '姓名',
-        search: true
+        search: true,
+        searchConfig: {
+          searchIndex: 'names',
+          searchTitle: '名字',
+          type: 'input'
+        }
+      },
+      {
+        dataIndex: 'age',
+        title: '年龄',
+        search: true,
+        searchConfig: {
+          searchIndex: 'ages',
+          searchTitle: '年纪',
+          type: 'input'
+        }
       }
     ]
   }
