@@ -16,9 +16,15 @@ export interface columnType {
 }
 
 export interface listType {
-  data: {
-    list: { [x: string]: any }[]
+  list?: {
+    data: { [x: string]: any }[]
+    page: number
+    size: number
+    now_page: number
+    last_page: number
+    totle: number
   }
+  obj?: Object
 }
 export interface searchListType {
   title: string
