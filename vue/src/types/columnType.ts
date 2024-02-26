@@ -1,3 +1,4 @@
+import type { EpPropMergeType } from 'element-plus/es/utils/index.mjs'
 export interface columnItemType {
   dataIndex: string
   title: string
@@ -8,10 +9,20 @@ export interface columnItemType {
     type?: 'input' | 'select'
   }
 }
+export interface headerTopButtonType {
+  title: string
+  module: Function
+  style?: {
+    type?: EpPropMergeType<StringConstructor, '' | 'default' | 'text' | 'success' | 'warning' | 'info' | 'primary' | 'danger', unknown>
+    plain?: boolean
+    icon?: string
+  }
+}
 export interface columnType {
   listConfig: {
     url: string
     column: columnItemType[]
+    headerButtonConfig?: headerTopButtonType[]
   }
 }
 

@@ -1,7 +1,8 @@
 <template>
-  {{ props }}{{ tableData }}{{ page }}
+  <!-- {{ props }}{{ tableData }}{{ page }} -->
   <TableSearch :column="props.config?.listConfig.column" @change="tableSearchCange" />
   <div :key="key">
+    <el-button v-for="(item, index) in props.config?.listConfig.headerButtonConfig" @click="clickButton(item)" :type="item.style?.type ?? 'success'" :plain="item.style?.plain ?? false" :icon="item.style?.icon ?? ''" :key="index">{{ item.title }}</el-button>
     <el-table ref="multipleTableRef" :data="tableData" style="width: 100%">
       <template v-for="item in props.config?.listConfig.column" :key="item.dataIndex">
         <el-table-column :property="item.dataIndex" :label="item.title" width="120" />
@@ -14,10 +15,23 @@
   </div>
 </template>
 
+<!-- let open1=() => {
+  return new Promise((resolve,reject)=>{
+    ElNotification({
+      title: '第一步：展示模型自带动画',
+      message:h(ElButton,{
+        type:"primary",
+        onclick:()=>resolve(20)
+      },'确认'),
+      duration: 0,
+    })
+  })
+} -->
 <script lang="ts" setup>
 import { ref, onMounted } from 'vue'
+import { h, defineComponent } from 'vue'
 import type { PropType } from 'vue'
-import { ElTable, ElTableColumn, ElPagination } from 'element-plus'
+import { ElTable, ElTableColumn, ElPagination, ElButton, ElNotification, ElDialog } from 'element-plus'
 import type { columnType, listType } from '@/types/columnType'
 import http from '@/utils/request'
 import { ElConfigProvider } from 'element-plus'
@@ -39,6 +53,25 @@ const page = ref({
 const pageChange = (val: number) => {
   console.log(`current page: ${val}`)
   loadData()
+}
+const clickButton = (item: any) => {
+  console.log(item)
+  // const vnode = h('div', { class: 'hello' }, 'Hello, Vue!')
+  // // 返回一个渲染函数
+  // return () => vnode
+  // return new Promise((resolve, reject) => {
+  // return ElDialog({
+  //   title: '第一步：展示模型自带动画',
+  //   message: h(
+  //     ElButton,
+  //     {
+  //       type: 'primary'
+  //     },
+  //     '确认'
+  //   ),
+  //   duration: 0
+  // })
+  // })
 }
 
 const multipleTableRef = ref<InstanceType<typeof ElTable>>()

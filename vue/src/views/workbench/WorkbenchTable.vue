@@ -7,11 +7,22 @@
 import TableTs from '@/tableTs/tableTs'
 import { ref, h, render, onMounted } from 'vue'
 import type { columnType } from '@/types/columnType'
+import ComEdit from './edit/ComEdit.vue'
 const tableContentRef = ref()
 
 const config: columnType = {
   listConfig: {
     url: '',
+    headerButtonConfig: [
+      {
+        title: '顶部',
+        module: () => import('./edit/ComEdit.vue'),
+        style: {
+          type: 'primary',
+          plain: true
+        }
+      }
+    ],
     column: [
       {
         dataIndex: 'name',
