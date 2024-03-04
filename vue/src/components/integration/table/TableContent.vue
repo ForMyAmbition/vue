@@ -13,6 +13,7 @@
     </el-config-provider>
     <div style="margin-top: 20px"></div>
   </div>
+  <div id="tableDialogRef"></div>
 </template>
 
 <!-- let open1=() => {
@@ -29,10 +30,10 @@
 } -->
 <script lang="ts" setup>
 import { ref, onMounted } from 'vue'
-import { h, defineComponent } from 'vue'
+import { h, defineComponent, render } from 'vue'
 import type { PropType } from 'vue'
 import { ElTable, ElTableColumn, ElPagination, ElButton, ElNotification, ElDialog } from 'element-plus'
-import type { columnType, listType } from '@/types/columnType'
+import type { columnType, listType, headerTopButtonType } from '@/types/columnType'
 import http from '@/utils/request'
 import { ElConfigProvider } from 'element-plus'
 import zhCn from 'element-plus/es/locale/lang/zh-cn'
@@ -54,25 +55,33 @@ const pageChange = (val: number) => {
   console.log(`current page: ${val}`)
   loadData()
 }
-const clickButton = (item: any) => {
-  console.log(item)
-  // const vnode = h('div', { class: 'hello' }, 'Hello, Vue!')
-  // // 返回一个渲染函数
-  // return () => vnode
-  // return new Promise((resolve, reject) => {
-  // return ElDialog({
-  //   title: '第一步：展示模型自带动画',
-  //   message: h(
-  //     ElButton,
-  //     {
-  //       type: 'primary'
-  //     },
-  //     '确认'
-  //   ),
-  //   duration: 0
-  // })
-  // })
+
+const reconstructImportFunction = (importString: Function) => {
+  // 这里使用 new Function 是不安全的，因为它可以执行任意代码
+  // 仅在了解潜在风险的情况下使用此方法
+  const importFunction = new Function(`return ${importString}`)()
+  return importFunction
 }
+const clickButton = async (item: headerTopButtonType) => {
+  // 尝试重新构造导入函数
+  const importFunction = reconstructImportFunction(item.module)
+  const module = await importFunction()
+  console.log(module)
+  const component = module.default
+  console.log(component)
+  const son = document.getElementById('tableDialogRef') as HTMLElement
+  const items = h(ElDialog, { modelValue: true }, () => [h(component)])
+  render(items, son)
+}
+
+// const clickButton = async (item: any) => {
+//   console.log(item.module)
+//   const module = await import(/* @vite-ignore */ item.module)
+//   const component = module.default
+//   console.log(component)
+//   const son = document.getElementById('tableDialogRef') as HTMLElement
+//   render(h(item.module), son)
+// }
 
 const multipleTableRef = ref<InstanceType<typeof ElTable>>()
 
