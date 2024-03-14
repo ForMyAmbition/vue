@@ -1,5 +1,7 @@
 <template>
   <!-- {{ props }}{{ tableData }}{{ page }} -->
+  {{ show }}
+  <el-button @click="show = true">123123</el-button>
   <TableSearch :column="props.config?.listConfig.column" @change="tableSearchCange" />
   <div :key="key">
     <el-button v-for="(item, index) in props.config?.listConfig.headerButtonConfig" @click="clickButton(item)" :type="item.style?.type ?? 'success'" :plain="item.style?.plain ?? false" :icon="item.style?.icon ?? ''" :key="index">{{ item.title }}</el-button>
@@ -29,7 +31,7 @@
   })
 } -->
 <script lang="ts" setup>
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, reactive } from 'vue'
 import { h, defineComponent, render } from 'vue'
 import type { PropType } from 'vue'
 import { ElTable, ElTableColumn, ElPagination, ElButton, ElNotification, ElDialog } from 'element-plus'
@@ -62,7 +64,10 @@ const reconstructImportFunction = (importString: Function) => {
   const importFunction = new Function(`return ${importString}`)()
   return importFunction
 }
+const show = reactive({ show: true })
 const clickButton = async (item: headerTopButtonType) => {
+  // show.value = true]
+  show.show = true
   // 尝试重新构造导入函数
   const importFunction = reconstructImportFunction(item.module)
   const module = await importFunction()
@@ -70,7 +75,8 @@ const clickButton = async (item: headerTopButtonType) => {
   const component = module.default
   console.log(component)
   const son = document.getElementById('tableDialogRef') as HTMLElement
-  const items = h(ElDialog, { modelValue: true }, () => [h(component)])
+
+  const items = h(ElDialog, { modelValue: show.show }, () => [h(component)])
   render(items, son)
 }
 
