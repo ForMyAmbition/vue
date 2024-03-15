@@ -10,13 +10,24 @@ import type { columnType } from '@/types/columnType'
 import ComEdit from './edit/ComEdit.vue'
 const tableContentRef = ref()
 
+const model = () => import('./edit/ComEdit.vue')
 const config: columnType = {
   listConfig: {
     url: '',
     headerButtonConfig: [
       {
         title: '顶部',
-        module: () => import('./edit/ComEdit.vue'),
+        module: model,
+        drawer: true,
+        style: {
+          type: 'primary',
+          plain: true
+        }
+      },
+      {
+        title: '顶部二',
+        module: () => import('./edit/ComEditTwo.vue'),
+        drawer: true,
         style: {
           type: 'primary',
           plain: true
@@ -42,6 +53,17 @@ const config: columnType = {
           searchIndex: 'ages',
           searchTitle: '年纪',
           type: 'input'
+        }
+      }
+    ],
+    columnButtonConfig: [
+      {
+        title: '每行',
+        module: () => import('./edit/ComEditTwo.vue'),
+        drawer: true,
+        style: {
+          type: 'primary',
+          plain: true
         }
       }
     ]

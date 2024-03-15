@@ -1,40 +1,35 @@
 <template>
-  <!-- {{ props }}{{ tableData }}{{ page }} -->
-  {{ show }}
-  <el-button @click="show = true">123123</el-button>
+  <el-button @click="show.showDialog = true">21323</el-button>
   <TableSearch :column="props.config?.listConfig.column" @change="tableSearchCange" />
   <div :key="key">
-    <el-button v-for="(item, index) in props.config?.listConfig.headerButtonConfig" @click="clickButton(item)" :type="item.style?.type ?? 'success'" :plain="item.style?.plain ?? false" :icon="item.style?.icon ?? ''" :key="index">{{ item.title }}</el-button>
+    <el-button v-for="(item, index) in props.config?.listConfig.headerButtonConfig" @click="clickButton(item, {})" :type="item.style?.type ?? 'success'" :plain="item.style?.plain ?? false" :icon="item.style?.icon ?? ''" :key="index">{{ item.title }}</el-button>
     <el-table ref="multipleTableRef" :data="tableData" style="width: 100%">
       <template v-for="item in props.config?.listConfig.column" :key="item.dataIndex">
         <el-table-column :property="item.dataIndex" :label="item.title" width="120" />
       </template>
+      <el-table-column fixed="right" label="Operations" width="120">
+        <template #default="scope">
+          <el-button v-for="(item, index) in props.config?.listConfig.columnButtonConfig" :key="index" link type="primary" size="small" @click="clickButton(item, scope)">Detail</el-button>
+        </template>
+      </el-table-column>
     </el-table>
     <el-config-provider :locale="zhCn">
       <el-pagination v-model:current-page="page.now_page" v-model:page-size="page.size" :page-sizes="[10, 15, 20, 40]" background layout="total, sizes, prev, pager, next, jumper" :total="page.totle" @size-change="pageChange" @current-change="pageChange" />
     </el-config-provider>
     <div style="margin-top: 20px"></div>
   </div>
-  <div id="tableDialogRef"></div>
+  <el-dialog v-model:model-value="show.showDialog">
+    <div id="tableDialogRef"></div>
+  </el-dialog>
+  <el-drawer v-model:model-value="show.showDrawer" title="I am the title" :with-header="false">
+    <div id="tableDrawerRef"></div>
+  </el-drawer>
 </template>
-
-<!-- let open1=() => {
-  return new Promise((resolve,reject)=>{
-    ElNotification({
-      title: '第一步：展示模型自带动画',
-      message:h(ElButton,{
-        type:"primary",
-        onclick:()=>resolve(20)
-      },'确认'),
-      duration: 0,
-    })
-  })
-} -->
 <script lang="ts" setup>
 import { ref, onMounted, reactive } from 'vue'
 import { h, defineComponent, render } from 'vue'
 import type { PropType } from 'vue'
-import { ElTable, ElTableColumn, ElPagination, ElButton, ElNotification, ElDialog } from 'element-plus'
+import { ElTable, ElTableColumn, ElPagination, ElButton, ElNotification, ElDialog, ElDrawer } from 'element-plus'
 import type { columnType, listType, headerTopButtonType } from '@/types/columnType'
 import http from '@/utils/request'
 import { ElConfigProvider } from 'element-plus'
@@ -58,36 +53,39 @@ const pageChange = (val: number) => {
   loadData()
 }
 
+/* ----------------------------------- 弹窗 ----------------------------------- */
+const show = reactive({ showDialog: false, showDrawer: false })
+
 const reconstructImportFunction = (importString: Function) => {
   // 这里使用 new Function 是不安全的，因为它可以执行任意代码
   // 仅在了解潜在风险的情况下使用此方法
   const importFunction = new Function(`return ${importString}`)()
   return importFunction
 }
-const show = reactive({ show: true })
-const clickButton = async (item: headerTopButtonType) => {
-  // show.value = true]
-  show.show = true
+
+const clickButton = async (item: headerTopButtonType, { row }: { row: Record<string, any> }) => {
+  console.log(row)
+  // show.showDialog = true
+  // show.showDrawer = true
   // 尝试重新构造导入函数
+
+  if (item.drawer) {
+    show.showDrawer = true
+  } else {
+    show.showDialog = true
+  }
+  // show.showDialog = true
   const importFunction = reconstructImportFunction(item.module)
   const module = await importFunction()
-  console.log(module)
   const component = module.default
-  console.log(component)
-  const son = document.getElementById('tableDialogRef') as HTMLElement
-
-  const items = h(ElDialog, { modelValue: show.show }, () => [h(component)])
-  render(items, son)
+  let son = null
+  if (item.drawer) {
+    son = document.getElementById('tableDrawerRef') as HTMLElement
+  } else {
+    son = document.getElementById('tableDialogRef') as HTMLElement
+  }
+  render(h(component), son)
 }
-
-// const clickButton = async (item: any) => {
-//   console.log(item.module)
-//   const module = await import(/* @vite-ignore */ item.module)
-//   const component = module.default
-//   console.log(component)
-//   const son = document.getElementById('tableDialogRef') as HTMLElement
-//   render(h(item.module), son)
-// }
 
 const multipleTableRef = ref<InstanceType<typeof ElTable>>()
 

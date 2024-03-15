@@ -12,6 +12,17 @@ export interface columnItemType {
 export interface headerTopButtonType {
   title: string
   module: Function
+  drawer?: boolean
+  style?: {
+    type?: EpPropMergeType<StringConstructor, '' | 'default' | 'text' | 'success' | 'warning' | 'info' | 'primary' | 'danger', unknown>
+    plain?: boolean
+    icon?: string
+  }
+}
+export interface columnButtonType {
+  title: string
+  module: Function
+  drawer?: boolean
   style?: {
     type?: EpPropMergeType<StringConstructor, '' | 'default' | 'text' | 'success' | 'warning' | 'info' | 'primary' | 'danger', unknown>
     plain?: boolean
@@ -23,6 +34,7 @@ export interface columnType {
     url: string
     column: columnItemType[]
     headerButtonConfig?: headerTopButtonType[]
+    columnButtonConfig?: columnButtonType[]
   }
 }
 
