@@ -29,7 +29,7 @@
 import { ref, onMounted, reactive } from 'vue'
 import { h, defineComponent, render } from 'vue'
 import type { PropType } from 'vue'
-import { ElTable, ElTableColumn, ElPagination, ElButton, ElNotification, ElDialog, ElDrawer } from 'element-plus'
+import { ElTable } from 'element-plus'
 import type { columnType, listType, headerTopButtonType } from '@/types/columnType'
 import http from '@/utils/request'
 import { ElConfigProvider } from 'element-plus'
@@ -63,7 +63,7 @@ const reconstructImportFunction = (importString: Function) => {
   return importFunction
 }
 
-const clickButton = async (item: headerTopButtonType, { row }: { row: Record<string, any> }) => {
+const clickButton = async (item: headerTopButtonType, { row }: { row?: Record<string, any> }) => {
   console.log(row)
   // show.showDialog = true
   // show.showDrawer = true
@@ -84,7 +84,14 @@ const clickButton = async (item: headerTopButtonType, { row }: { row: Record<str
   } else {
     son = document.getElementById('tableDialogRef') as HTMLElement
   }
-  render(h(component), son)
+  render(
+    h(component, {
+      onClose: () => {
+        console.log('dianjile')
+      }
+    }),
+    son
+  )
 }
 
 const multipleTableRef = ref<InstanceType<typeof ElTable>>()

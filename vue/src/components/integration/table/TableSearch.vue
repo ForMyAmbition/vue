@@ -23,7 +23,6 @@
 import type { PropType } from 'vue'
 import { ref } from 'vue'
 import type { columnType, listType, columnItemType, searchListType } from '@/types/columnType'
-import { ElInput, ElButton } from 'element-plus'
 const props = defineProps({
   column: Array as PropType<columnItemType[]>
 })
