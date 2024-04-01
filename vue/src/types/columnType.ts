@@ -8,6 +8,7 @@ export interface columnItemType {
     searchTitle?: string | any
     type?: 'input' | 'select'
   }
+  replace?: (text: string, record: { [key: string]: any }) => any
 }
 export interface headerTopButtonType {
   title: string

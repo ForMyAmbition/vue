@@ -5,7 +5,13 @@
     <el-button v-for="(item, index) in props.config?.listConfig.headerButtonConfig" @click="clickButton(item, {})" :type="item.style?.type ?? 'success'" :plain="item.style?.plain ?? false" :icon="item.style?.icon ?? ''" :key="index">{{ item.title }}</el-button>
     <el-table ref="multipleTableRef" :data="tableData" style="width: 100%">
       <template v-for="item in props.config?.listConfig.column" :key="item.dataIndex">
-        <el-table-column :property="item.dataIndex" :label="item.title" width="120" />
+        <!-- <el-table-column :property="item.dataIndex" :label="item.title" width="120" /> -->
+        <el-table-column :label="item.title" width="180">
+          <template #default="scope">
+            <component v-if="item.replace" :is="item.replace(item, item)"></component>
+            <div v-else>{{ scope.row[item.dataIndex] }}</div>
+          </template>
+        </el-table-column>
       </template>
       <el-table-column fixed="right" label="Operations" width="120">
         <template #default="scope">
@@ -25,7 +31,12 @@
     <div id="tableDrawerRef"></div>
   </el-drawer>
 </template>
-<script lang="ts" setup>
+<script lang="tsx" setup>
+const renderDemo = (msg: string) => (
+  <div class="wrapper">
+    <div class="inner"> msg is {msg}</div>
+  </div>
+)
 import { ref, onMounted, reactive } from 'vue'
 import { h, defineComponent, render } from 'vue'
 import type { PropType } from 'vue'

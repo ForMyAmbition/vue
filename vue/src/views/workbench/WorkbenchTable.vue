@@ -3,7 +3,7 @@
   <div ref="tableContentRef" id="tableContentRef"></div>
 </template>
 
-<script setup lang="ts">
+<script setup lang="tsx">
 import TableTs from '@/tableTs/tableTs'
 import { ref, h, render, onMounted } from 'vue'
 import type { columnType } from '@/types/columnType'
@@ -43,6 +43,9 @@ const config: columnType = {
           searchIndex: 'names',
           searchTitle: '名字',
           type: 'input'
+        },
+        replace: (text, record) => {
+          return <el-tag>123</el-tag>
         }
       },
       {
