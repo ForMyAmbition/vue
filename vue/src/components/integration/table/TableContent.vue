@@ -1,5 +1,5 @@
 <template>
-  <el-button @click="show.showDialog = true">21323</el-button>
+  <!-- <el-button @click="show.showDialog = true">21323</el-button> -->
   <TableSearch :column="props.config?.listConfig.column" @change="tableSearchCange" />
   <div :key="key">
     <el-button v-for="(item, index) in props.config?.listConfig.headerButtonConfig" @click="clickButton(item, {})" :type="item.style?.type ?? 'success'" :plain="item.style?.plain ?? false" :icon="item.style?.icon ?? ''" :key="index">{{ item.title }}</el-button>
@@ -8,7 +8,7 @@
         <!-- <el-table-column :property="item.dataIndex" :label="item.title" width="120" /> -->
         <el-table-column :label="item.title" width="180">
           <template #default="scope">
-            <component v-if="item.replace" :is="item.replace(item, item)"></component>
+            <component v-if="item.replace" :is="item.replace(item, scope.row)"></component>
             <div v-else>{{ scope.row[item.dataIndex] }}</div>
           </template>
         </el-table-column>
@@ -25,10 +25,10 @@
     <div style="margin-top: 20px"></div>
   </div>
   <el-dialog v-model:model-value="show.showDialog">
-    <div id="tableDialogRef"></div>
+    <div ref="tableDialogRef"></div>
   </el-dialog>
-  <el-drawer v-model:model-value="show.showDrawer" title="I am the title" :with-header="false">
-    <div id="tableDrawerRef"></div>
+  <el-drawer v-model:model-value="show.showDrawer" title="I am the title" :with-header="false" :size="show.config.size">
+    <div ref="tableDrawerRef"></div>
   </el-drawer>
 </template>
 <script lang="tsx" setup>
@@ -65,7 +65,7 @@ const pageChange = (val: number) => {
 }
 
 /* ----------------------------------- 弹窗 ----------------------------------- */
-const show = reactive({ showDialog: false, showDrawer: false })
+const show = reactive({ showDialog: false, showDrawer: false, config: {} })
 
 const reconstructImportFunction = (importString: Function) => {
   // 这里使用 new Function 是不安全的，因为它可以执行任意代码
@@ -73,7 +73,8 @@ const reconstructImportFunction = (importString: Function) => {
   const importFunction = new Function(`return ${importString}`)()
   return importFunction
 }
-
+const tableDialogRef = ref<any>(null)
+const tableDrawerRef = ref<any>(null)
 const clickButton = async (item: headerTopButtonType, { row }: { row?: Record<string, any> }) => {
   console.log(row)
   // show.showDialog = true
@@ -85,16 +86,23 @@ const clickButton = async (item: headerTopButtonType, { row }: { row?: Record<st
   } else {
     show.showDialog = true
   }
+  show.config = item
   // show.showDialog = true
   const importFunction = reconstructImportFunction(item.module)
   const module = await importFunction()
   const component = module.default
   let son = null
   if (item.drawer) {
-    son = document.getElementById('tableDrawerRef') as HTMLElement
+    son = tableDrawerRef.value
+    console.log('🚀 ~ clickButton ~ son:', son)
+    let obj = document.getElementById('tableDrawerRef') as HTMLElement
+    console.log('🚀 ~ clickButton ~ obj:', obj)
   } else {
-    son = document.getElementById('tableDialogRef') as HTMLElement
+    son = tableDialogRef.value
+    // son = document.getElementById('tableDialogRef') as HTMLElement
   }
+
+  console.log('🚀 ~ clickButton ~ son:', son)
   render(
     h(component, {
       onClose: () => {

@@ -1,6 +1,8 @@
 <template>
-  <div>工作台</div>
-  <div ref="tableContentRef" id="tableContentRef"></div>
+  <div>
+    <div>工作台</div>
+    <div ref="tableContentRef" id="tableContentRef"></div>
+  </div>
 </template>
 
 <script setup lang="tsx">
@@ -28,6 +30,7 @@ const config: columnType = {
         title: '顶部二',
         module: () => import('./edit/ComEditTwo.vue'),
         drawer: true,
+        size: 1000,
         style: {
           type: 'primary',
           plain: true
@@ -45,7 +48,7 @@ const config: columnType = {
           type: 'input'
         },
         replace: (text, record) => {
-          return <el-tag>123</el-tag>
+          return <el-tag>{record.name}</el-tag>
         }
       },
       {

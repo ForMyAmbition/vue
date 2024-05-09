@@ -8,12 +8,13 @@ export interface columnItemType {
     searchTitle?: string | any
     type?: 'input' | 'select'
   }
-  replace?: (text: string, record: { [key: string]: any }) => any
+  replace?: (text: columnItemType, record: { [key: string]: any }) => any
 }
 export interface headerTopButtonType {
   title: string
   module: Function
   drawer?: boolean
+  size?: Number | String
   style?: {
     type?: EpPropMergeType<StringConstructor, '' | 'default' | 'text' | 'success' | 'warning' | 'info' | 'primary' | 'danger', unknown>
     plain?: boolean
