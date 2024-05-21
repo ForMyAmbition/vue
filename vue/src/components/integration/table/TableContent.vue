@@ -65,7 +65,7 @@ const pageChange = (val: number) => {
 }
 
 /* ----------------------------------- 弹窗 ----------------------------------- */
-const show = reactive({ showDialog: false, showDrawer: false, config: {} })
+const show = reactive({ showDialog: false, showDrawer: false, config: {} as headerTopButtonType })
 
 const reconstructImportFunction = (importString: Function) => {
   // 这里使用 new Function 是不安全的，因为它可以执行任意代码

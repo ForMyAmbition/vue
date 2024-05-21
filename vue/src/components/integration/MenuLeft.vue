@@ -1,7 +1,7 @@
 <template>
   <el-row class="tac">
     <el-col>
-      <el-menu default-active="2" class="el-menu-vertical-demo" @open="handleOpen" @close="handleClose" router>
+      <el-menu :default-active="defaultMenu" class="el-menu-vertical-demo" @open="handleOpen" @close="handleClose" router>
         <template v-for="(item, index) in menu" :key="index">
           <menu-sub v-if="item.children" :menuChildren="item"></menu-sub>
           <el-menu-item v-else>
@@ -17,17 +17,26 @@
 <script setup lang="ts">
 /* -------------------------------- 使用递归生成菜单 -------------------------------- */
 // import { RouterLink, RouterView } from 'vue-router'
-import { onMounted } from 'vue'
+import { onMounted, computed } from 'vue'
 import MenuSub from './menu/MenuSub.vue'
 import { useRouter, type RouteLocationRaw } from 'vue-router'
 import { reactive } from 'vue'
-
 export interface typePropsMenu {
   title: String
   children?: Array<typePropsMenu>
   path: RouteLocationRaw
   icon?: String
 }
+const router = useRouter()
+const defaultMenu = computed(() => {
+  // console.log('router', router.currentRoute.value.fullpath);
+  if (router.currentRoute) {
+    return router.currentRoute.value.fullPath
+  } else {
+    return ''
+  }
+})
+
 let menu = reactive<typePropsMenu[]>([
   {
     title: '一级',
