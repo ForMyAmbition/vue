@@ -7,7 +7,7 @@
 import TableTs from '@/tableTs/tableTs'
 import { ref, h, render, onMounted } from 'vue'
 import type { columnType } from '@/types/columnType'
-import ComEdit from './edit/ComEdit.vue'
+// import ComEdit from './edit/ComEdit.vue'
 const tableContentRef = ref()
 
 const model = () => import('./ComEdit.vue')

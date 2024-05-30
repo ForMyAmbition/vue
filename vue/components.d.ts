@@ -8,6 +8,7 @@ export {}
 declare module 'vue' {
   export interface GlobalComponents {
     AssemblyTable: typeof import('./src/components/AssemblyTable.vue')['default']
+    Content: typeof import('./src/components/integration/content.vue')['default']
     ElButton: typeof import('element-plus/es')['ElButton']
     ElCheckbox: typeof import('element-plus/es')['ElCheckbox']
     ElCheckboxGroup: typeof import('element-plus/es')['ElCheckboxGroup']
@@ -32,6 +33,8 @@ declare module 'vue' {
     ElSwitch: typeof import('element-plus/es')['ElSwitch']
     ElTable: typeof import('element-plus/es')['ElTable']
     ElTableColumn: typeof import('element-plus/es')['ElTableColumn']
+    ElTabPane: typeof import('element-plus/es')['ElTabPane']
+    ElTabs: typeof import('element-plus/es')['ElTabs']
     ElTag: typeof import('element-plus/es')['ElTag']
     ElTimePicker: typeof import('element-plus/es')['ElTimePicker']
     IconCommunity: typeof import('./src/components/icons/IconCommunity.vue')['default']
@@ -43,6 +46,7 @@ declare module 'vue' {
     MenuSub: typeof import('./src/components/integration/menu/MenuSub.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
+    TabContent: typeof import('./src/components/integration/TabContent.vue')['default']
     TableContent: typeof import('./src/components/integration/table/TableContent.vue')['default']
     TableSearch: typeof import('./src/components/integration/table/TableSearch.vue')['default']
     TopTable: typeof import('./src/components/integration/top/TopTable.vue')['default']

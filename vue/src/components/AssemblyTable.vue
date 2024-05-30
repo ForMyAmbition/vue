@@ -9,7 +9,8 @@
     <!-- 右侧顶部 -->
     <div class="realistic-whole">
       <TopTable></TopTable>
-      <RouterView />
+      <TabContent></TabContent>
+      <!-- <RouterView /> -->
     </div>
   </div>
 </template>
@@ -17,6 +18,7 @@
 import { RouterLink, RouterView } from 'vue-router'
 import MenuLeft from './integration/MenuLeft.vue'
 import TopTable from './integration/top/TopTable.vue'
+import TabContent from './integration/TabContent.vue'
 </script>
 <style lang="less" scoped>
 .table-content {

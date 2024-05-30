@@ -94,9 +94,9 @@ const clickButton = async (item: headerTopButtonType, { row }: { row?: Record<st
   let son = null
   if (item.drawer) {
     son = tableDrawerRef.value
-    console.log('🚀 ~ clickButton ~ son:', son)
-    let obj = document.getElementById('tableDrawerRef') as HTMLElement
-    console.log('🚀 ~ clickButton ~ obj:', obj)
+    // console.log('🚀 ~ clickButton ~ son:', son)
+    // let obj = document.getElementById('tableDrawerRef') as HTMLElement
+    // console.log('🚀 ~ clickButton ~ obj:', obj)
   } else {
     son = tableDialogRef.value
     // son = document.getElementById('tableDialogRef') as HTMLElement
